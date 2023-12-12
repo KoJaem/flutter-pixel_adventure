@@ -9,10 +9,11 @@ bool checkCollision(player, block) {
   final blockWidth = block.width;
   final blockHeight = block.height;
 
-  final fixeX = player.scale.x < 0 ? playerX - playerWidth : playerX;
+  final fixedX = player.scale.x < 0 ? playerX - playerWidth : playerX;
+  final fixedY = block.isPlatform ? playerY + playerHeight : playerY;
 
-  return (playerY < blockY + blockHeight &&
+  return (fixedY < blockY + blockHeight &&
       playerY + playerHeight > blockY &&
-      fixeX < blockX + blockWidth &&
-      fixeX + playerWidth > blockX);
+      fixedX < blockX + blockWidth &&
+      fixedX + playerWidth > blockX);
 }
