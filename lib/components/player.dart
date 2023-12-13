@@ -30,7 +30,7 @@ class Player extends SpriteAnimationGroupComponent
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 300;
+  final double _jumpForce = 260;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
@@ -152,7 +152,7 @@ class Player extends SpriteAnimationGroupComponent
 
   void _playerJump(double dt) {
     velocity.y = -_jumpForce;
-    position.y += velocity.y * dt;
+    // position.y += velocity.y * dt; // 코드 버그 확인해야함
     isOnGround = false;
     hasJumped = false;
   }
@@ -191,6 +191,7 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
+
             break;
           }
         }
