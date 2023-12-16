@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
 import 'package:pixel_adventure/components/fruit.dart';
@@ -15,7 +16,8 @@ enum PlayerState {
   jumping,
   falling,
   hit,
-  appearing
+  appearing,
+  disappearing,
 } // 플레이어 애니메이션 뭐뭐쓸지 enum 타입으로 정리해두면 좋음
 
 class Player extends SpriteAnimationGroupComponent
@@ -32,18 +34,20 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation fallingAnimation;
   late final SpriteAnimation hitAnimation;
   late final SpriteAnimation appearingAnimation;
+  late final SpriteAnimation disAppearingAnimation;
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 260;
+  final double _jumpForce = 240; // 240
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
-  double moveSpeed = 100;
+  double moveSpeed = 100; // 100
   Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
   bool isOnGround = false;
   bool hasJumped = false;
   bool gotHit = false;
+  bool reachedCheckpoint = false;
   List<CollisionBlock> collisionBlocks = [];
   CustomHitbox hitbox = CustomHitbox(
     offsetX: 10,
@@ -67,7 +71,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    if (!gotHit) {
+    if (!gotHit && !reachedCheckpoint) {
       _updatePlayerState();
       _updatePlayerMovement(dt);
       _checkHorizontalCollisions();
@@ -100,10 +104,11 @@ class Player extends SpriteAnimationGroupComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     // CollisionCallbacks 와 함께 사용
-    if (other is Fruit) {
-      other.collidingWithPlayer();
+    if (!reachedCheckpoint) {
+      if (other is Fruit) other.collidingWithPlayer();
+      if (other is Saw) _respawn();
+      if (other is Checkpoint) _reachedCheckpoint();
     }
-    if (other is Saw) _respawn();
 
     super.onCollision(intersectionPoints, other);
   }
@@ -115,6 +120,8 @@ class Player extends SpriteAnimationGroupComponent
     fallingAnimation = _spriteAnimation(state: "Fall", amount: 1);
     hitAnimation = _spriteAnimation(state: "Hit", amount: 7);
     appearingAnimation = _specialSpriteAnimation(state: "Appearing", amount: 7);
+    disAppearingAnimation =
+        _specialSpriteAnimation(state: "Disappearing", amount: 7);
 
     // 모든 애니메이션 리스트 전부 적고 사용하기 위함.
     animations = {
@@ -124,6 +131,7 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.falling: fallingAnimation,
       PlayerState.hit: hitAnimation,
       PlayerState.appearing: appearingAnimation,
+      PlayerState.disappearing: disAppearingAnimation,
     };
 
     // 현재 애니메이션 설정
@@ -269,5 +277,27 @@ class Player extends SpriteAnimationGroupComponent
       });
     });
     // position = startingPosition;
+  }
+
+  void _reachedCheckpoint() {
+    reachedCheckpoint = true;
+    if (scale.x > 0) {
+      position = position - Vector2.all(32);
+    } else if (scale.x < 0) {
+      position = position + Vector2(32, -32);
+    }
+
+    current = PlayerState.disappearing;
+
+    const reachedCheckpointDuration = Duration(milliseconds: 350);
+    Future.delayed(reachedCheckpointDuration, () {
+      reachedCheckpoint = false;
+      position = Vector2.all(-640);
+
+      const waitToChangeDuration = Duration(seconds: 3);
+      Future.delayed(waitToChangeDuration, () {
+        // switch level
+      });
+    });
   }
 }
