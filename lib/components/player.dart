@@ -56,6 +56,9 @@ class Player extends SpriteAnimationGroupComponent
     height: 28,
   );
 
+  // double fixedDeltaTime = 1 / 60;
+  // double accumulatedTime = 0;
+
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
@@ -71,13 +74,19 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
+    // accumulatedTime += dt;
+
+    // while (accumulatedTime >= fixedDeltaTime) {
     if (!gotHit && !reachedCheckpoint) {
       _updatePlayerState();
-      _updatePlayerMovement(dt);
+      _updatePlayerMovement(dt); // dt => fixedDeltaTime
       _checkHorizontalCollisions();
-      _applyGravity(dt);
+      _applyGravity(dt); // dt => fixedDeltaTime
       _checkVerticalCollisions();
     }
+    // accumulatedTime -= fixedDeltaTime;
+    // }
+
     super.update(dt);
   }
 
@@ -198,7 +207,8 @@ class Player extends SpriteAnimationGroupComponent
 
   void _playerJump(double dt) {
     velocity.y = -_jumpForce;
-    // position.y += velocity.y * dt; // 코드 버그 확인해야함
+    // position.y += velocity.y *
+    dt; // 코드 버그 확인해야함 => fixed deltaTime 관련 로직 추가되면서 고쳐지는 오류(?)
     isOnGround = false;
     hasJumped = false;
   }
