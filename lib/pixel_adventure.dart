@@ -22,7 +22,7 @@ class PixelAdventure extends FlameGame
   late CameraComponent cam;
   Player player = Player(character: 'Virtual Guy');
   late JoystickComponent joystick; // with DragCallbacks 랑 같이 사용
-  bool showControls = true;
+  bool showControls = false;
   List<String> levelNames = ['Level-01', 'Level-02'];
   int currentLevelIndex = 0;
 
