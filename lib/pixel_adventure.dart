@@ -81,11 +81,14 @@ class PixelAdventure extends FlameGame
   }
 
   void loadNextLevel() {
+    removeWhere((component) => component is Level);
     if (currentLevelIndex < levelNames.length - 1) {
       currentLevelIndex++;
       _loadLevel();
     } else {
       // no more levels
+      currentLevelIndex = 0;
+      _loadLevel();
     }
   }
 
