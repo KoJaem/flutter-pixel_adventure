@@ -15,9 +15,8 @@ class Fruit extends SpriteAnimationComponent
   }) : super(
           position: position,
           size: size,
-          removeOnFinish: true, // 애니메이션 이후 사라지게 하는 방법 2
+          // removeOnFinish: true, // 애니메이션 이후 사라지게 하는 방법 2
         );
-  bool _collected = false;
   final double stepTime = 0.05;
   final hitbox = CustomHitbox(
     offsetX: 10,
@@ -49,21 +48,22 @@ class Fruit extends SpriteAnimationComponent
     return super.onLoad();
   }
 
-  void collidingWithPlayer() {
-    if (!_collected) {
-      animation = SpriteAnimation.fromFrameData(
-        game.images.fromCache('Items/Fruits/Collected.png'),
-        SpriteAnimationData.sequenced(
-          amount: 6,
-          stepTime: stepTime,
-          textureSize: Vector2.all(32),
-          loop: false,
-        ),
-      );
-      _collected = true;
-    }
+  void collidingWithPlayer() async {
+    animation = SpriteAnimation.fromFrameData(
+      game.images.fromCache('Items/Fruits/Collected.png'),
+      SpriteAnimationData.sequenced(
+        amount: 6,
+        stepTime: stepTime,
+        textureSize: Vector2.all(32),
+        loop: false,
+      ),
+    );
 
-    // 애니메이션 이후 사라지게 하는 방법 1
+    await animationTicker?.completed; // 애니메이션 이후 사라지게 하는 방법 3
+    // animationTicker.reset 이 필요없는 이유 : 해당 요소를 제거하기 때문에 animationTicker 를 다시 사용하지 않기 때문
+    removeFromParent();
+
+    // 애니메이션 이후 사라지게 하는 방법 1 (비추, 스코어 계산하는 로직등을 처리하려면 버그있음)
     // Future.delayed(
     //   const Duration(milliseconds: 400),
     //   () => removeFromParent(),
