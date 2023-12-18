@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
@@ -209,6 +210,12 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _playerJump(double dt) {
+    if (game.playSounds) {
+      FlameAudio.play(
+        'jump.wav',
+        volume: game.soundVolume,
+      );
+    }
     velocity.y = -_jumpForce;
     // position.y += velocity.y *
     dt; // 코드 버그 확인해야함 => fixed deltaTime 관련 로직 추가되면서 고쳐지는 오류(?)
@@ -272,6 +279,12 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _respawn() async {
+    if (game.playSounds) {
+      FlameAudio.play(
+        'hit.wav',
+        volume: game.soundVolume,
+      );
+    }
     const canMoveDuration = Duration(milliseconds: 400);
     gotHit = true;
     current = PlayerState.hit;
@@ -294,6 +307,12 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _reachedCheckpoint() async {
+    if (game.playSounds) {
+      FlameAudio.play(
+        'disappear.wav',
+        volume: game.soundVolume,
+      );
+    }
     reachedCheckpoint = true;
     if (scale.x > 0) {
       position = position - Vector2.all(32);
