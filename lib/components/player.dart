@@ -117,7 +117,7 @@ class Player extends SpriteAnimationGroupComponent
       Set<Vector2> intersectionPoints, PositionComponent other) {
     // CollisionCallbacks 와 함께 사용
     if (!reachedCheckpoint) {
-      if (other is Fruit) other.collidingWithPlayer();
+      if (other is Fruit) other.collidedWithPlayer();
       if (other is Saw) _respawn();
       if (other is Checkpoint) _reachedCheckpoint();
     }

@@ -23,7 +23,7 @@ class PixelAdventure extends FlameGame
   Player player = Player(character: 'Virtual Guy');
   late JoystickComponent joystick; // with DragCallbacks 랑 같이 사용
   bool showControls = false;
-  bool playSounds = false;
+  bool playSounds = true;
   double soundVolume = 1.0;
   List<String> levelNames = ['Level-01', 'Level-02'];
   int currentLevelIndex = 0;
