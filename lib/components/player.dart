@@ -66,6 +66,7 @@ class Player extends SpriteAnimationGroupComponent
     _loadAllAnimations();
 
     startingPosition = Vector2(position.x, position.y);
+    priority = 5;
     // debugMode = true;
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
