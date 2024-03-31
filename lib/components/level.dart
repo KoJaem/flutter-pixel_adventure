@@ -26,28 +26,29 @@ class Level extends World with HasGameRef<PixelAdventure> {
 
     add(level);
 
-    _scrollingBackground();
+    // _scrollingBackground(); // * mobile 빌드 시 주석해제
     _spawningObjects();
     _addCollisions();
 
     return super.onLoad();
   }
 
-  void _scrollingBackground() {
-    final backgroundLayer = level.tileMap.getLayer('Background');
+  // * mobile 빌드 시 주석해제
+  // void _scrollingBackground() {
+  //   final backgroundLayer = level.tileMap.getLayer('Background');
 
-    if (backgroundLayer != null) {
-      final backgroundColor =
-          backgroundLayer.properties.getValue('BackgroundColor');
+  //   if (backgroundLayer != null) {
+  //     final backgroundColor =
+  //         backgroundLayer.properties.getValue('BackgroundColor');
 
-      final backgroundTile = BackgroundTile(
-        color: backgroundColor ?? 'Gray',
-        position: Vector2(0, 0),
-      );
+  //     final backgroundTile = BackgroundTile(
+  //       color: backgroundColor ?? 'Gray',
+  //       position: Vector2(0, 0),
+  //     );
 
-      add(backgroundTile);
-    }
-  }
+  //     add(backgroundTile);
+  //   }
+  // }
 
   void _spawningObjects() {
     final spawnPointsLayer = level.tileMap
