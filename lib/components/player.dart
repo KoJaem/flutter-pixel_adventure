@@ -41,7 +41,7 @@ class Player extends SpriteAnimationGroupComponent
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 320; // * web: 300 mobile: 240
+  final double _jumpForce = 230;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100; // 100
@@ -59,8 +59,8 @@ class Player extends SpriteAnimationGroupComponent
     height: 28,
   );
 
-  // double fixedDeltaTime = 1 / 60;
-  // double accumulatedTime = 0;
+  double fixedDeltaTime = 1 / 60;
+  double accumulatedTime = 0;
 
   @override
   FutureOr<void> onLoad() {
@@ -78,18 +78,18 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    // accumulatedTime += dt;
+    accumulatedTime += dt;
 
-    // while (accumulatedTime >= fixedDeltaTime) {
-    if (!gotHit && !reachedCheckpoint) {
-      _updatePlayerState();
-      _updatePlayerMovement(dt); // dt => fixedDeltaTime
-      _checkHorizontalCollisions();
-      _applyGravity(dt); // dt => fixedDeltaTime
-      _checkVerticalCollisions();
+    while (accumulatedTime >= fixedDeltaTime) {
+      if (!gotHit && !reachedCheckpoint) {
+        _updatePlayerState();
+        _updatePlayerMovement(fixedDeltaTime);
+        _checkHorizontalCollisions();
+        _applyGravity(fixedDeltaTime);
+        _checkVerticalCollisions();
+      }
+      accumulatedTime -= fixedDeltaTime;
     }
-    // accumulatedTime -= fixedDeltaTime;
-    // }
 
     super.update(dt);
   }
