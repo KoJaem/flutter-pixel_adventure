@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -7,8 +6,8 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/painting.dart';
 import 'package:pixel_adventure/components/jump_button.dart';
-import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/components/level.dart';
+import 'package:pixel_adventure/components/player.dart';
 
 class PixelAdventure extends FlameGame
     with
@@ -25,7 +24,7 @@ class PixelAdventure extends FlameGame
   bool showControls = false;
   bool playSounds = true;
   double soundVolume = 1.0;
-  List<String> levelNames = ['Level-01', 'Level-02'];
+  List<String> levelNames = ['Level-01', 'Level-02', 'Level-03'];
   int currentLevelIndex = 0;
 
   @override
