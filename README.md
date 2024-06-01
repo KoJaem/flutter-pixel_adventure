@@ -33,6 +33,10 @@
 ## 🎮 플레이 해보고 싶으시면..
 제 [포트폴리오 사이트](https://kojaem-exhibition.site/)에 방문해주세요! 🚀
 
+> [!Note]
+> 이동: 키보드 자판 <br />
+> 점프: 스페이스 바
+
 ![image](https://github.com/KoJaem/flutter-pixel_adventure/assets/62785823/e57176b5-f988-469f-9592-940175e938f6)
 
 
