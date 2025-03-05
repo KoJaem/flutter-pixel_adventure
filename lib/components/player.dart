@@ -95,7 +95,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   @override
-  bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     // player.dart 에 KeyboardHandler 를 추가하고 사용
     // pixel_adventure.dart 에 HasKeyboardHandlerComponents 추가해야함
     horizontalMovement = 0;
